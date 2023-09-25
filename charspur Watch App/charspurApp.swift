@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct charspur_Watch_AppApp: App {
+    @State private var showReset = false
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                if showReset {
+                    ResetView()
+                } else { ScoreView() }
+            }
         }
     }
 }
+
+
