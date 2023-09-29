@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct ScoreView: View {
+    @EnvironmentObject var scoredata: ScoreData
+//    @State private var score1 = 0
+//    @State private var score2 = 0
     var body: some View {
         VStack {
             StepperView()
+//                .environmentObject(scoredata)
             StepperView()
+//                .environmentObject(scoredata)
             Button(action: {
                 print("reset")
             }) {
@@ -40,26 +45,30 @@ struct ResetView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-   
+//    static let scoredata = ScoreData()
+//    @EnvironmentObject var scoredata: ScoreData
     static var previews: some View {
-        ResetView()
+        ScoreView().environmentObject(ScoreData())
     }
+    
 }
 
 struct StepperView: View {
-    @State private var value = 0
+    @EnvironmentObject var scoredata: ScoreData
+//    @State private var value = 0
+//    @Binding var value: Int
 //    @State private var `in` = 0...Int.max
     func incrementStep() {
-        value += 1
+        scoredata.score1 += 1
     }
     
     func decrementStep() {
-        if value > 0 {value -= 1}
+        if scoredata.score1 > 0 {scoredata.score1 -= 1}
     }
     
     var body: some View {
         Stepper {
-            Text("\(value)")
+            Text("\(scoredata.score1)")
         } onIncrement: {
             incrementStep()
         } onDecrement: {
