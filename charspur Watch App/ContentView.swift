@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ScoreView: View {
-    @EnvironmentObject var scoredata: ScoreData
-//    @State private var score1 = 0
-//    @State private var score2 = 0
+//    @ObservedObject var scoredata: ScoreData
+    @Binding var score1: Int
+    @Binding var score2: Int
     var body: some View {
         VStack {
-            StepperView()
+            StepperView(value: $score1)
 //                .environmentObject(scoredata)
-            StepperView()
+            StepperView(value: $score2)
 //                .environmentObject(scoredata)
             Button(action: {
                 print("reset")
@@ -44,31 +44,41 @@ struct ResetView: View {
     }
 }
 
+struct PreviewContainer: View {
+    @State private var score1 = 0
+    @State private var score2 = 0
+    var body: some View {
+        ScoreView(score1: $score1, score2: $score2)
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
 //    static let scoredata = ScoreData()
-//    @EnvironmentObject var scoredata: ScoreData
+//    static let scoredata = ScoreData()
+//    @StateObject static var scoredata = ScoreData()
+
     static var previews: some View {
-        ScoreView().environmentObject(ScoreData())
+        PreviewContainer()
+//    https://www.avanderlee.com/swiftui/stateobject-observedobject-differences/
     }
     
 }
 
 struct StepperView: View {
-    @EnvironmentObject var scoredata: ScoreData
 //    @State private var value = 0
-//    @Binding var value: Int
+    @Binding var value: Int
 //    @State private var `in` = 0...Int.max
     func incrementStep() {
-        scoredata.score1 += 1
+        value += 1
     }
     
     func decrementStep() {
-        if scoredata.score1 > 0 {scoredata.score1 -= 1}
+        if value > 0 {value -= 1}
     }
     
     var body: some View {
         Stepper {
-            Text("\(scoredata.score1)")
+            Text("\(value)")
         } onIncrement: {
             incrementStep()
         } onDecrement: {
