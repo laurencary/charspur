@@ -11,6 +11,7 @@ struct ScoreView: View {
 //    @ObservedObject var scoredata: ScoreData
     @Binding var score1: Int
     @Binding var score2: Int
+    @Binding var showReset: Bool
     var body: some View {
         VStack {
             StepperView(value: $score1)
@@ -18,7 +19,7 @@ struct ScoreView: View {
             StepperView(value: $score2)
 //                .environmentObject(scoredata)
             Button(action: {
-                print("reset")
+                showReset = true
             }) {
                 Text("Reset")
             }
@@ -27,16 +28,28 @@ struct ScoreView: View {
 }
 
 struct ResetView: View {
+    @Binding var score1: Int
+    @Binding var score2: Int
+    @Binding var showReset: Bool
+    
+    func resetScores(shouldReset: Bool) {
+        if shouldReset {
+            score1 = 0
+            score2 = 0
+        }
+        showReset = false
+    }
+    
     var body: some View {
         VStack {
             Text("confirm reset?")
             Button(action: {
-                print("yes")
+                resetScores(shouldReset: true)
             }) {
                 Text("yes")
             }
             Button(action: {
-                print("no")
+                resetScores(shouldReset: false)
             }) {
                 Text("no")
             }
@@ -45,21 +58,22 @@ struct ResetView: View {
 }
 
 struct PreviewContainer: View {
-    @State private var score1 = 0
+    @State private var score1 = 1
     @State private var score2 = 0
+    @State private var showReset = false
     var body: some View {
-        ScoreView(score1: $score1, score2: $score2)
+//        ScoreView(score1: $score1, score2: $score2, showReset: $showReset)
+        if (showReset) {
+            ResetView(score1: $score1, score2: $score2, showReset: $showReset)
+        } else {
+            ScoreView(score1: $score1, score2: $score2, showReset: $showReset)
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
-//    static let scoredata = ScoreData()
-//    static let scoredata = ScoreData()
-//    @StateObject static var scoredata = ScoreData()
-
     static var previews: some View {
         PreviewContainer()
-//    https://www.avanderlee.com/swiftui/stateobject-observedobject-differences/
     }
     
 }

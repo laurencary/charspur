@@ -15,14 +15,13 @@ class ScoreData : ObservableObject {
 
 @main
 struct charspur_Watch_AppApp: App {
-//    @State private var showReset = false
-//    @EnvironmentObject var scoredata: ScoreData
     @State private var score1 = 0
     @State private var score2 = 0
+    @State private var showReset = false
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                ScoreView(score1: $score1, score2: $score2)
+                ScoreView(score1: $score1, score2: $score2, showReset: $showReset)
 //                if scoredata.showReset {
 //                    ResetView().environmentObject(scoredata)
 //                } else { ScoreView(scoredata:scoredata).environmentObject(scoredata) }
